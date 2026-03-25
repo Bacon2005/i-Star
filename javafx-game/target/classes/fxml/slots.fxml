@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1553.0" style="-fx-background-color: #285943;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tyrone.controller.SlotsGameController">
    <children>
-      <AnchorPane fx:id="betPanel11" layoutX="1176.0" layoutY="236.0" prefHeight="62.0" prefWidth="371.0" style="-fx-background-color: gray; -fx-background-radius: 50;">
+      <AnchorPane fx:id="betPanel11" layoutX="1176.0" layoutY="236.0" prefHeight="62.0" prefWidth="362.0" style="-fx-background-color: gray; -fx-background-radius: 50;">
          <children>
             <Label fx:id="playerBal" alignment="TOP_LEFT" layoutX="28.0" layoutY="12.0" prefHeight="39.0" prefWidth="302.0" text="Your Balance:" textAlignment="CENTER">
                <font>
@@ -81,18 +81,13 @@
             <Font size="30.0" />
          </font>
       </Button>
-      <Button fx:id="spinBtn1" layoutX="52.0" layoutY="836.0" mnemonicParsing="false" onAction="#handleSpin" prefHeight="47.0" prefWidth="163.0" text="Choose Game">
+      <Button layoutX="52.0" layoutY="836.0" mnemonicParsing="false" onAction="#chooseGame" prefHeight="47.0" prefWidth="163.0" text="Choose Game">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <AnchorPane layoutY="-227.0" prefHeight="250.0" prefWidth="1552.0" style="-fx-background-color: gold;" />
-      <AnchorPane layoutX="1.0" layoutY="913.0" prefHeight="18.0" prefWidth="1552.0" style="-fx-background-color: gold;" />
-      <ImageView fx:id="jumpscareImg" fitHeight="930.0" fitWidth="1553.0" pickOnBounds="true" visible="false">
-         <image>
-            <Image url="@../images/Dealer/Jumpscare.jpg" />
-         </image>
-      </ImageView>
+      <AnchorPane layoutY="-227.0" prefHeight="250.0" prefWidth="1552.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="907.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-227.0" />
+      <AnchorPane layoutX="1.0" layoutY="910.0" prefHeight="21.0" prefWidth="1553.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="910.0" />
       <AnchorPane fx:id="betPanel2" layoutX="407.0" layoutY="53.0" prefHeight="192.0" prefWidth="744.0" style="-fx-background-color: gray; -fx-background-radius: 20;">
          <children>
             <HBox layoutX="32.0" layoutY="29.0" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
@@ -176,5 +171,15 @@
             </Label>
          </children>
       </AnchorPane>
+      <ImageView fx:id="jumpscareImg" fitHeight="930.0" fitWidth="1553.0" pickOnBounds="true" visible="false">
+         <image>
+            <Image url="@../images/Dealer/Jumpscare.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="spinBtn1" layoutX="1287.0" layoutY="356.0" mnemonicParsing="false" onAction="#handleSpin" prefHeight="74.0" prefWidth="155.0" style="-fx-background-color: red; -fx-background-radius: 20;" text="ALL IN" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

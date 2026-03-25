@@ -12,6 +12,11 @@ public class Audio {
 
     private static MediaPlayer bgMusic;
 
+    private static MediaPlayer bgMenuMusic;
+
+    // private static final AudioClip bgMenuMusic = new AudioClip(
+    // Audio.class.getResource("/audio/RightRound.mp3").toExternalForm());;
+
     private static final double TARGET_VOLUME = 0.2;
 
     private static final AudioClip winSound = new AudioClip(Audio.class.getResource("/audio/win.mp3").toExternalForm());
@@ -43,9 +48,45 @@ public class Audio {
     private static final AudioClip slotLose = new AudioClip(
             Audio.class.getResource("/audio/aww.mp3").toExternalForm());
 
+    private static final AudioClip jumpScareSound3 = new AudioClip(
+            Audio.class.getResource("/audio/jumpscare3.mp3").toExternalForm());
+
+    private static final AudioClip daveTalking = new AudioClip(
+            Audio.class.getResource("/audio/talking/talking.mp3").toExternalForm());
+
+    private static final AudioClip daveGreeting = new AudioClip(
+            Audio.class.getResource("/audio/talking/greeting.mp3").toExternalForm());
+
+    private static final AudioClip daveAngry = new AudioClip(
+            Audio.class.getResource("/audio/talking/angry.mp3").toExternalForm());
+
+    private static final AudioClip daveHappy = new AudioClip(
+            Audio.class.getResource("/audio/talking/happy.mp3").toExternalForm());
+
+    // DAVE TALKING
+    public static void playDaveTalking() {
+        daveTalking.play();
+    }
+
+    public static void playDaveGreeting() {
+        daveGreeting.play();
+    }
+
+    public static void playDaveHappy() {
+        daveHappy.play();
+    }
+
+    public static void playDaveAngry() {
+        daveAngry.play();
+    }
+
     // SOUND EFFECT
     public static void playWinSound() {
         winSound.play();
+        money.play();
+    }
+
+    public static void playMoneySound() {
         money.play();
     }
 
@@ -75,6 +116,37 @@ public class Audio {
         slotSpin.stop();
     }
 
+    // MENU BACKGROUND MUSIC
+    public static void playMenuBackgroundMusic() {
+        initMenuMusic();
+
+        bgMenuMusic.setVolume(0);
+        bgMenuMusic.play();
+
+        fadeTo(bgMenuMusic, TARGET_VOLUME, 3); // fade in 3 seconds
+    }
+
+    public static void stopMenuBackgroundMusic() {
+        if (bgMenuMusic == null)
+            return;
+
+        bgMenuMusic.stop();
+    }
+
+    public static void lowerMenuMusic() {
+        if (bgMenuMusic == null)
+            return;
+
+        fadeTo(bgMenuMusic, 0.05, 1.5); // fade to very low volume
+    }
+
+    public static void louderMenuMusic() {
+        if (bgMenuMusic == null)
+            return;
+
+        fadeTo(bgMenuMusic, TARGET_VOLUME, 1.5); // fade to very low volume
+    }
+
     // BACKGROUND MUSIC SETUP
     private static void initMusic() {
         if (bgMusic != null)
@@ -87,20 +159,31 @@ public class Audio {
         bgMusic.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
+    private static void initMenuMusic() {
+        if (bgMenuMusic != null)
+            return;
+
+        Media media = new Media(
+                Audio.class.getResource("/audio/RightRound.mp3").toExternalForm());
+
+        bgMenuMusic = new MediaPlayer(media);
+        bgMenuMusic.setCycleCount(MediaPlayer.INDEFINITE);
+    }
+
     public static void playBackgroundMusic() {
         initMusic();
 
         bgMusic.setVolume(0);
         bgMusic.play();
 
-        fadeTo(TARGET_VOLUME, 3); // fade in 3 seconds
+        fadeTo(bgMusic, TARGET_VOLUME, 3); // fade in 3 seconds
     }
 
     public static void pauseBackgroundMusic() {
         if (bgMusic == null)
             return;
 
-        fadeTo(0, 1.5, () -> bgMusic.pause());
+        fadeTo(bgMusic, 0, 1.5, () -> bgMusic.pause());
     }
 
     public static void resumeBackgroundMusic() {
@@ -110,7 +193,7 @@ public class Audio {
         bgMusic.setVolume(0);
         bgMusic.play();
 
-        fadeTo(TARGET_VOLUME, 1.5);
+        fadeTo(bgMusic, TARGET_VOLUME, 1.5);
     }
 
     public static void stopBackgroundMusic() {
@@ -119,18 +202,17 @@ public class Audio {
         bgMusic.stop();
     }
 
-    private static void fadeTo(double targetVolume, double seconds) {
-        fadeTo(targetVolume, seconds, null);
+    private static void fadeTo(MediaPlayer player, double targetVolume, double seconds) {
+        fadeTo(player, targetVolume, seconds, null);
     }
 
-    private static void fadeTo(double targetVolume, double seconds, Runnable onFinished) {
-        if (bgMusic == null)
+    private static void fadeTo(MediaPlayer player, double targetVolume, double seconds, Runnable onFinished) {
+        if (player == null)
             return;
 
         Timeline fade = new Timeline(
-                new KeyFrame(
-                        Duration.seconds(seconds),
-                        new KeyValue(bgMusic.volumeProperty(), targetVolume)));
+                new KeyFrame(Duration.seconds(seconds),
+                        new KeyValue(player.volumeProperty(), targetVolume)));
 
         if (onFinished != null) {
             fade.setOnFinished(e -> onFinished.run());
@@ -152,5 +234,10 @@ public class Audio {
     public static void playJumpscareSound2() {
         jumpScareSound2.setVolume(1);
         jumpScareSound2.play();
+    }
+
+    public static void playJumpscareSound3() {
+        jumpScareSound3.setVolume(1);
+        jumpScareSound3.play();
     }
 }

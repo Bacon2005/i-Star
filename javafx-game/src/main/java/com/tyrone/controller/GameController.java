@@ -13,6 +13,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -24,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,6 +97,9 @@ public class GameController {
 
     private double bet = 0;
 
+    private double playerMoney;
+
+    Jumpscare jumpscare;
     // Reusable Images
 
     private static final Image dealerWaiting = new Image(
@@ -118,16 +123,24 @@ public class GameController {
             .getResource("/images/cards/cardBack.jpg")
             .toExternalForm());
 
+    public void setPlayerMoney(double money) {
+        this.playerMoney = money;
+        System.out.println("Player money received: " + money);
+
+        if (player != null) {
+            player.startBalance(playerMoney);
+            startNewGame();
+        }
+    }
+
     // Runs automatically when UI loads
     @FXML
     public void initialize() {
         Audio.playBackgroundMusic();
-
-        Jumpscare jumpscare = new Jumpscare(jumpscareImg);
+        jumpscare = new Jumpscare(jumpscareImg);
         jumpscare.start();
 
         player = new HumanPlayer("Player");
-        startNewGame();
     }
 
     private Image getCardImage(String fileName) {
@@ -488,5 +501,15 @@ public class GameController {
         delay.setOnFinished(e -> jumpscareImg.setVisible(false));
         delay.play();
         Audio.playBackgroundMusic();
+    }
+
+    @FXML
+    private void chooseGame(ActionEvent event) throws IOException {
+        jumpscare.stopGame();
+        SceneController.switchScene(event, "/fxml/menu.fxml", controller -> {
+            if (controller instanceof MenuController menuCtrl) {
+                menuCtrl.setVisited(player.getBalance());
+            }
+        });
     }
 }

@@ -8,7 +8,7 @@ public class HumanPlayer extends Player {
 
     public HumanPlayer(String name) {
         super(name);
-        this.balance = 50000.00;
+        this.balance = 0.0;
     }
 
     @Override
@@ -39,6 +39,10 @@ public class HumanPlayer extends Player {
         } else {
             balance = balance - bet;
         }
+    }
+
+    public void startBalance(double amount) {
+        this.balance = amount;
     }
 
     public void updateBalance(double amountWon) {

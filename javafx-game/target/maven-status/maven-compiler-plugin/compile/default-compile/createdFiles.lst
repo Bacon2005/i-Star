@@ -17,4 +17,5 @@ com\tyrone\classes\Card$Suit.class
 com\tyrone\controller\SceneController.class
 com\tyrone\controller\GameController.class
 com\tyrone\controller\SlotsGameController.class
+com\tyrone\controller\MenuController.class
 com\tyrone\threads\Audio.class

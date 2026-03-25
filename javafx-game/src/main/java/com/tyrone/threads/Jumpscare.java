@@ -26,6 +26,9 @@ public class Jumpscare extends Thread {
     private static final Image whiteImage = new Image(
             Jumpscare.class.getResource("/images/Jumpscare/white.png").toExternalForm());
 
+    private static final Image whiteFace = new Image(
+            Jumpscare.class.getResource("/images/Jumpscare/whiteFace.jpg").toExternalForm());
+
     public Jumpscare(ImageView jumpscareImg) {
         this.jumpscareImg = jumpscareImg;
         setDaemon(true); // this makes the thread stop automatically on app exit
@@ -91,6 +94,26 @@ public class Jumpscare extends Thread {
         });
     }
 
+    private void jumpscare3() {
+        if (isPlaying) {
+            return;
+        }
+        isPlaying = true;
+        Platform.runLater(() -> {
+            jumpscareImg.setImage(whiteFace);
+            Audio.stopBackgroundMusic();
+            jumpscareImg.setVisible(true);
+            Audio.playJumpscareSound3();
+            PauseTransition delay = new PauseTransition(Duration.millis(1000)); // delay
+            delay.setOnFinished(e -> {
+                jumpscareImg.setVisible(false);
+                Audio.playBackgroundMusic();
+                isPlaying = false;
+            });
+            delay.play();
+        });
+    }
+
     @Override
     public void run() {
         while (gameRunning) {
@@ -109,7 +132,7 @@ public class Jumpscare extends Thread {
                             jumpscare2();
                             break;
                         case 3:
-                            jumpscare1();
+                            jumpscare3();
                             break;
                         default:
                             break;

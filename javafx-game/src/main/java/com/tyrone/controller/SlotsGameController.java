@@ -1,15 +1,18 @@
 package com.tyrone.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.tyrone.Exceptions.InvalidBetException;
 import com.tyrone.classes.HumanPlayer;
 import com.tyrone.classes.Symbol;
 import com.tyrone.threads.Audio;
+import com.tyrone.threads.Jumpscare;
 import com.tyrone.threads.ReelThread;
 
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,6 +53,7 @@ public class SlotsGameController {
 
     private double bet = 0;
 
+    private double playerMoney;
     private static final Image dealerJumpscare = new Image(
             GameController.class.getResource("/images/Dealer/Jumpscare.jpg").toExternalForm());
 
@@ -68,12 +72,30 @@ public class SlotsGameController {
             new Symbol("Elijah", 2, 500, "/images/slots/elijah.jpg"),
             new Symbol("Rar", 1, 0, "/images/slots/superRare.png"));
 
+    Jumpscare jumpscare;
+
+    public void setPlayerMoney(double money) {
+        playerMoney = money;
+        System.out.println("Player money received: " + playerMoney);
+
+        // Start game ONLY when money is received
+        if (player != null) {
+            startGame();
+        }
+    }
+
     @FXML
     public void initialize() {
+        Audio.playBackgroundMusic();
         player = new HumanPlayer("Player");
-        updatePlayerBalance();
+        jumpscare = new Jumpscare(jumpscareImg);
+        jumpscare.start();
+    }
 
+    private void startGame() {
         setupReels();
+        player.startBalance(playerMoney);
+        updatePlayerBalance();
     }
 
     private void setupReels() {
@@ -262,5 +284,22 @@ public class SlotsGameController {
         delay.setOnFinished(e -> jumpscareImg.setVisible(false));
         delay.play();
         Audio.playBackgroundMusic();
+    }
+
+    // @FXML
+    // private void allIn(){
+    // double allIn = player.getBalance();
+    // player.playerBet(allIn);
+    // }
+
+    // Switch back to homepage
+    @FXML
+    private void chooseGame(ActionEvent event) throws IOException {
+        jumpscare.stopGame();
+        SceneController.switchScene(event, "/fxml/menu.fxml", controller -> {
+            if (controller instanceof MenuController menuCtrl) {
+                menuCtrl.setVisited(player.getBalance());
+            }
+        });
     }
 }
