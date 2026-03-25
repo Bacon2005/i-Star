@@ -15,6 +15,17 @@ public class Jumpscare extends Thread {
     private ImageView jumpscareImg;
     private volatile boolean isPlaying = false;
 
+    // Reusable images so the game will not overload
+
+    private static final Image jumpscareImage1 = new Image(
+            Jumpscare.class.getResource("/images/Jumpscare/scare1.png").toExternalForm());
+
+    private static final Image eminemImage = new Image(
+            Jumpscare.class.getResource("/images/Jumpscare/Eminem.png").toExternalForm());
+
+    private static final Image whiteImage = new Image(
+            Jumpscare.class.getResource("/images/Jumpscare/white.png").toExternalForm());
+
     public Jumpscare(ImageView jumpscareImg) {
         this.jumpscareImg = jumpscareImg;
         setDaemon(true); // this makes the thread stop automatically on app exit
@@ -31,8 +42,7 @@ public class Jumpscare extends Thread {
         }
         isPlaying = true;
         Platform.runLater(() -> {
-            Image img = new Image(getClass().getResource("/images/Jumpscare/scare1.png").toExternalForm());
-            jumpscareImg.setImage(img);
+            jumpscareImg.setImage(jumpscareImage1);
 
             Audio.stopBackgroundMusic();
             Audio.playJumpscareSound1();
@@ -56,8 +66,8 @@ public class Jumpscare extends Thread {
         isPlaying = true;
 
         Platform.runLater(() -> {
-            Image img = new Image(getClass().getResource("/images/Jumpscare/Eminem.png").toExternalForm());
-            jumpscareImg.setImage(img);
+
+            jumpscareImg.setImage(eminemImage);
             jumpscareImg.setVisible(true);
 
             Audio.stopBackgroundMusic();
@@ -66,17 +76,15 @@ public class Jumpscare extends Thread {
             PauseTransition delay = new PauseTransition(Duration.seconds(1));
             delay.setOnFinished(e -> {
                 // AFTER 1 second → switch to white
-                Image img2 = new Image(getClass().getResource("/images/Jumpscare/white.png").toExternalForm());
-                jumpscareImg.setImage(img2);
+                jumpscareImg.setImage(whiteImage);
 
                 PauseTransition delay2 = new PauseTransition(Duration.seconds(5));
                 delay2.setOnFinished(ev -> {
                     jumpscareImg.setVisible(false);
                     Audio.playBackgroundMusic();
-
+                    isPlaying = false;
                 });
                 delay2.play();
-                isPlaying = false;
             });
 
             delay.play();
@@ -87,12 +95,12 @@ public class Jumpscare extends Thread {
     public void run() {
         while (gameRunning) {
             System.out.println("Game is running");
-            int random = ThreadLocalRandom.current().nextInt(1, 101);
+            int random = ThreadLocalRandom.current().nextInt(100);
             int randomScare = ThreadLocalRandom.current().nextInt(1, 4);
             // int testScare = 2;
             try {
                 Thread.sleep(1000); // prevent CPU spinning
-                if (random >= 99) { // 1 in 100 chance of having a jumpscare every second
+                if (random == 0) { // 1 in 100 chance of having a jumpscare every second
                     switch (randomScare) {
                         case 1:
                             jumpscare1();

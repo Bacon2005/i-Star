@@ -31,14 +31,48 @@ public class Audio {
     private static final AudioClip money = new AudioClip(
             Audio.class.getResource("/audio/cha ching.mp3").toExternalForm());
 
+    private static final AudioClip slotSpin = new AudioClip(
+            Audio.class.getResource("/audio/slotSpinning.mp3").toExternalForm());
+
+    private static final AudioClip slotResult = new AudioClip(
+            Audio.class.getResource("/audio/slotResult.mp3").toExternalForm());
+
+    private static final AudioClip slotHit = new AudioClip(
+            Audio.class.getResource("/audio/hit.mp3").toExternalForm());
+
+    private static final AudioClip slotLose = new AudioClip(
+            Audio.class.getResource("/audio/aww.mp3").toExternalForm());
+
     // SOUND EFFECT
     public static void playWinSound() {
         winSound.play();
         money.play();
     }
 
+    public static void playSlotLose() {
+        slotLose.play();
+    }
+
+    public static void playSlotResult() {
+        slotResult.play();
+    }
+
+    public static void playSlotHit() {
+        slotHit.play();
+    }
+
+    // SLOTS
     public static void playLoseSound() {
         loseSound.play();
+    }
+
+    public static void playSlotSpin() {
+        slotSpin.play();
+        slotSpin.setCycleCount(AudioClip.INDEFINITE);
+    }
+
+    public static void stopSpinSound() {
+        slotSpin.stop();
     }
 
     // BACKGROUND MUSIC SETUP
