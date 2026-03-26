@@ -54,8 +54,6 @@ public class SlotsGameController {
     private double bet = 0;
 
     private double playerMoney;
-    private static final Image dealerJumpscare = new Image(
-            GameController.class.getResource("/images/Dealer/Jumpscare.jpg").toExternalForm());
 
     // weight determines the rarity of the symbol. The higher weight the more
     // common.
@@ -192,6 +190,8 @@ public class SlotsGameController {
 
             if (s1.getName() == "Rar" || s2.getName() == "Rar" || s3.getName() == "Rar") {
                 jumpScare();
+                betBtn.setDisable(false);
+                spinBtn.setDisable(false);
                 return;
             }
 
@@ -229,14 +229,13 @@ public class SlotsGameController {
                 System.out.println("WIN: " + winnings);
             } else {
                 loseCounter(); // no match
-                Audio.playSlotLose();
 
                 if (loseCounter == MAX_LOSS || player.getBalance() == 0) {
                     jumpscareExitOnLose();
                 }
+                Audio.playSlotLose();
                 System.out.println("LOSE");
             }
-
             bet = 0;
             updateCurrentBetField(bet);
             betBtn.setDisable(false);
@@ -262,7 +261,7 @@ public class SlotsGameController {
 
     private void jumpscareExitOnLose() {
         jumpScare();
-        PauseTransition delay = new PauseTransition(Duration.millis(300));
+        PauseTransition delay = new PauseTransition(Duration.millis(3000));
         delay.setOnFinished(e -> {
             Platform.exit();
             System.exit(0);
@@ -270,27 +269,37 @@ public class SlotsGameController {
         delay.play();
     }
 
+    private static final Image whiteFace = new Image(
+            Jumpscare.class.getResource("/images/Jumpscare/whiteFace.jpg").toExternalForm());
+
     @FXML
     private void jumpScare() {
         System.out.println("Jumpscare");
 
-        jumpscareImg.setImage(dealerJumpscare);
-
+        jumpscareImg.setImage(whiteFace);
         Audio.stopBackgroundMusic();
-        Audio.playJumpscareSound();
         jumpscareImg.setVisible(true);
-
-        PauseTransition delay = new PauseTransition(Duration.millis(300)); // delay
-        delay.setOnFinished(e -> jumpscareImg.setVisible(false));
+        Audio.playJumpscareSound3();
+        PauseTransition delay = new PauseTransition(Duration.millis(3000)); // delay
+        delay.setOnFinished(e -> {
+            jumpscareImg.setVisible(false);
+            Audio.playBackgroundMusic();
+        });
         delay.play();
-        Audio.playBackgroundMusic();
     }
 
-    // @FXML
-    // private void allIn(){
-    // double allIn = player.getBalance();
-    // player.playerBet(allIn);
-    // }
+    @FXML
+    private void allIn() {
+        bet = player.getBalance();
+        try {
+            player.playerBet(bet);
+            updateCurrentBetField(bet);
+            betField.clear();
+            updatePlayerBalance();
+        } catch (InvalidBetException e) {
+            System.out.println("Exception Caught: " + e.getMessage());
+        }
+    }
 
     // Switch back to homepage
     @FXML

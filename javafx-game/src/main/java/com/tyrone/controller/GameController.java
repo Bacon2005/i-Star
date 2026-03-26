@@ -504,6 +504,19 @@ public class GameController {
     }
 
     @FXML
+    private void allIn() {
+        bet = player.getBalance();
+        try {
+            player.playerBet(bet);
+            updateCurrentBetField(bet);
+            betField.clear();
+            updatePlayerBalance();
+        } catch (InvalidBetException e) {
+            System.out.println("Exception Caught: " + e.getMessage());
+        }
+    }
+
+    @FXML
     private void chooseGame(ActionEvent event) throws IOException {
         jumpscare.stopGame();
         SceneController.switchScene(event, "/fxml/menu.fxml", controller -> {
