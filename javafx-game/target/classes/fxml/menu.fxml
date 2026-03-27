@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="930.0" prefWidth="1553.0" style="-fx-background-color: #285943;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tyrone.controller.MenuController">
+   <children>
+      <AnchorPane fx:id="daveDialouge" prefHeight="930.0" prefWidth="1553.0" visible="false">
+         <children>
+            <ImageView fx:id="waiterImg" fitHeight="698.0" fitWidth="938.0" layoutX="618.0" layoutY="257.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="-3.0">
+               <image>
+                  <Image url="@../images/DaveInstructions.png" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="dialougePane" layoutX="50.0" layoutY="592.0" prefHeight="200.0" prefWidth="798.0" style="-fx-background-color: white; -fx-background-radius: 30;">
+               <children>
+                  <ImageView fx:id="miniDave" fitHeight="150.0" fitWidth="200.0" layoutX="-2.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/DaveInstructions.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="waiterText" layoutX="198.0" layoutY="3.0" prefHeight="199.0" prefWidth="599.0" text="Welcome to i-Star" wrapText="true">
+                     <font>
+                        <Font name="System Bold" size="37.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <HBox alignment="TOP_CENTER" layoutX="52.0" layoutY="820.0" prefHeight="100.0" prefWidth="798.0" spacing="30.0">
+               <children>
+                  <Button fx:id="yesBtn" mnemonicParsing="false" onAction="#yesText" prefHeight="45.0" prefWidth="191.0" text="Yes" visible="false">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="continueBtn" mnemonicParsing="false" onAction="#continueText" prefHeight="45.0" prefWidth="191.0" text="Continue">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="noBtn" mnemonicParsing="false" onAction="#noText" prefHeight="45.0" prefWidth="191.0" text="No" visible="false">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="welcomePane" prefHeight="930.0" prefWidth="1553.0">
+         <children>
+            <ImageView fx:id="welcomeImg" fitHeight="938.0" fitWidth="1258.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="158.0" AnchorPane.topAnchor="-6.0">
+               <image>
+                  <Image url="@../images/Welcome.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="enterBtn" layoutX="714.0" layoutY="784.0" mnemonicParsing="false" onAction="#enterBtn" prefHeight="60.0" prefWidth="149.0" text="Enter">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="gamePane" prefHeight="930.0" prefWidth="1553.0" visible="false">
+         <children>
+            <ImageView fitHeight="414.0" fitWidth="412.0" layoutX="878.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="354.0" AnchorPane.rightAnchor="263.0">
+               <image>
+                  <Image url="@../images/homeimg.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="1016.0" layoutY="608.0" mnemonicParsing="false" onAction="#goToBlackjack" prefHeight="84.0" prefWidth="135.0" text="i-21">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Button>
+            <Button layoutX="386.0" layoutY="612.0" mnemonicParsing="false" onAction="#goToSlots" prefHeight="84.0" prefWidth="136.0" text="i-Slots">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="414.0" fitWidth="412.0" layoutX="247.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="354.0" AnchorPane.leftAnchor="263.0">
+               <image>
+                  <Image url="@../images/homeimg.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="659.0" layoutY="5.0" prefHeight="141.0" prefWidth="253.0" text="i-Star" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="96.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="10.0" layoutY="-217.0" prefHeight="250.0" prefWidth="1552.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="907.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="-227.0" />
+      <AnchorPane layoutX="11.0" layoutY="902.0" prefHeight="29.0" prefWidth="1553.0" style="-fx-background-color: gold;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="913.0" />
+   </children>
+</AnchorPane>

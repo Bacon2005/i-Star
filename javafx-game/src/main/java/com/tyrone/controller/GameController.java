@@ -13,6 +13,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -23,6 +24,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javafx.util.Duration;
 
@@ -92,16 +97,56 @@ public class GameController {
 
     private double bet = 0;
 
+    private double playerMoney;
+
+    Jumpscare jumpscare;
+    // Reusable Images
+
+    private static final Image dealerWaiting = new Image(
+            GameController.class.getResource("/images/Dealer/waiting.jpg").toExternalForm());
+
+    private static final Image dealerWin = new Image(
+            GameController.class.getResource("/images/Dealer/win.jpg").toExternalForm());
+
+    private static final Image dealerLose = new Image(
+            GameController.class.getResource("/images/Dealer/lose.jpg").toExternalForm());
+
+    private static final Image dealerTie = new Image(
+            GameController.class.getResource("/images/Dealer/tie.jpg").toExternalForm());
+
+    private static final Image dealerJumpscare = new Image(
+            GameController.class.getResource("/images/Dealer/Jumpscare.jpg").toExternalForm());
+
+    private static final Map<String, Image> cardImageCache = new HashMap<>();
+
+    private static final Image CARD_BACK = new Image(GameController.class
+            .getResource("/images/cards/cardBack.jpg")
+            .toExternalForm());
+
+    public void setPlayerMoney(double money) {
+        this.playerMoney = money;
+        System.out.println("Player money received: " + money);
+
+        if (player != null) {
+            player.startBalance(playerMoney);
+            startNewGame();
+        }
+    }
+
     // Runs automatically when UI loads
     @FXML
     public void initialize() {
         Audio.playBackgroundMusic();
-
-        Jumpscare jumpscare = new Jumpscare(jumpscareImg);
+        jumpscare = new Jumpscare(jumpscareImg);
         jumpscare.start();
 
         player = new HumanPlayer("Player");
-        startNewGame();
+    }
+
+    private Image getCardImage(String fileName) {
+        return cardImageCache.computeIfAbsent(fileName, name -> new Image(GameController.class
+                .getResource("/images/cards/" + name)
+                .toExternalForm()));
     }
 
     // Start a new round
@@ -113,7 +158,7 @@ public class GameController {
         Audio.resumeBackgroundMusic();
         cardImg.setDisable(false);
 
-        showDealerImage("/images/Dealer/waiting.jpg");
+        showDealerImage(dealerWaiting);
 
         deck = new Deck();
         // player = new HumanPlayer("Player");
@@ -168,7 +213,7 @@ public class GameController {
                     } else if (player.getBalance() == 0) {
                         jumpscareExitOnLose();
                     }
-                    showDealerImage("/images/Dealer/win.jpg");
+                    showDealerImage(dealerWin);
 
                     Audio.pauseBackgroundMusic();
                     Audio.playLoseSound();
@@ -234,8 +279,7 @@ public class GameController {
         if (hidden) {
             hiddenDealerCardData = card;
 
-            cardView = new ImageView(
-                    new Image(getClass().getResourceAsStream("/images/cards/cardBack.jpg")));
+            cardView = new ImageView(CARD_BACK);
 
             cardView.setFitWidth(90);
             cardView.setFitHeight(130);
@@ -250,8 +294,7 @@ public class GameController {
 
     private void revealDealerCard() {
 
-        Image image = new Image(
-                getClass().getResourceAsStream("/images/cards/" + hiddenDealerCardData.getImageFileName()));
+        Image image = getCardImage(hiddenDealerCardData.getImageFileName());
 
         hiddenDealerCard.setImage(image);
         hiddenDealerCardData = null;
@@ -262,9 +305,7 @@ public class GameController {
     // Create card image
     private ImageView createCardView(Card card) {
 
-        String path = "/images/cards/" + card.getImageFileName();
-
-        Image image = new Image(getClass().getResourceAsStream(path));
+        Image image = getCardImage(card.getImageFileName());
 
         ImageView view = new ImageView(image);
         view.setFitWidth(90);
@@ -322,9 +363,8 @@ public class GameController {
             dealerValueLabel.setText("Dealer: " + dealer.getHand().calculateValue());
     }
 
-    private void showDealerImage(String path) {
-        Image img = new Image(getClass().getResource(path).toExternalForm());
-        dealerPhoto.setImage(img);
+    private void showDealerImage(Image image) {
+        dealerPhoto.setImage(image);
         dealerPhoto.setFitWidth(154);
         dealerPhoto.setFitHeight(163);
     }
@@ -338,7 +378,7 @@ public class GameController {
         if (dealer.isBust()) {
             statusLabel.setText("Dealer Bust! Player wins!");
 
-            showDealerImage("/images/Dealer/lose.jpg");
+            showDealerImage(dealerLose);
 
             Audio.pauseBackgroundMusic();
             Audio.playWinSound();
@@ -349,7 +389,7 @@ public class GameController {
             Audio.pauseBackgroundMusic();
             Audio.playWinSound();
 
-            showDealerImage("/images/Dealer/lose.jpg");
+            showDealerImage(dealerLose);
 
             playerWin();
         } else if (dealerValue > playerValue) {
@@ -361,7 +401,7 @@ public class GameController {
             } else if (player.getBalance() == 0) {
                 jumpscareExitOnLose();
             }
-            showDealerImage("/images/Dealer/win.jpg");
+            showDealerImage(dealerWin);
 
             Audio.pauseBackgroundMusic();
             Audio.playLoseSound();
@@ -370,7 +410,7 @@ public class GameController {
             if (player.getBalance() == 0) {
                 jumpscareExitOnLose();
             }
-            showDealerImage("/images/Dealer/tie.jpg");
+            showDealerImage(dealerTie);
 
         }
 
@@ -450,8 +490,8 @@ public class GameController {
     @FXML
     private void jumpScare() {
         System.out.println("Jumpscare");
-        Image img = new Image(getClass().getResource("/images/Dealer/Jumpscare.jpg").toExternalForm());
-        jumpscareImg.setImage(img);
+
+        jumpscareImg.setImage(dealerJumpscare);
 
         Audio.stopBackgroundMusic();
         Audio.playJumpscareSound();
@@ -461,5 +501,28 @@ public class GameController {
         delay.setOnFinished(e -> jumpscareImg.setVisible(false));
         delay.play();
         Audio.playBackgroundMusic();
+    }
+
+    @FXML
+    private void allIn() {
+        bet = player.getBalance();
+        try {
+            player.playerBet(bet);
+            updateCurrentBetField(bet);
+            betField.clear();
+            updatePlayerBalance();
+        } catch (InvalidBetException e) {
+            System.out.println("Exception Caught: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void chooseGame(ActionEvent event) throws IOException {
+        jumpscare.stopGame();
+        SceneController.switchScene(event, "/fxml/menu.fxml", controller -> {
+            if (controller instanceof MenuController menuCtrl) {
+                menuCtrl.setVisited(player.getBalance());
+            }
+        });
     }
 }
