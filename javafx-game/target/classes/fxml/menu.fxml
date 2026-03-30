@@ -83,9 +83,9 @@
                   <Font size="30.0" />
                </font>
             </Button>
-            <ImageView fitHeight="414.0" fitWidth="412.0" layoutX="247.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="354.0" AnchorPane.leftAnchor="263.0">
+            <ImageView fitHeight="414.0" fitWidth="412.0" layoutX="247.0" layoutY="142.0" pickOnBounds="true" AnchorPane.bottomAnchor="354.0" AnchorPane.leftAnchor="263.0">
                <image>
-                  <Image url="@../images/homeimg.png" />
+                  <Image url="@../images/Gemini_Generated_Image_l1eiwbl1eiwbl1ei.png" />
                </image>
             </ImageView>
             <Label layoutX="659.0" layoutY="5.0" prefHeight="141.0" prefWidth="253.0" text="i-Star" textFill="WHITE">
