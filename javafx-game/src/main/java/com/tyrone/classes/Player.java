@@ -10,11 +10,7 @@ public abstract class Player {
         this.hand = new Hand();
         this.turnActive = false;
     }
-
-    public String getName() {
-        return name;
-    }
-
+    
     public Hand getHand() {
         return hand;
     }
